@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <bean id="webDriver" class="org.openqa.selenium.chrome.ChromeDriver"/>
+
+    <!-- 初始任务   -->
+    <bean id="rootAction" class="com.rain6.luckybug.action.RootAction">
+        <property name="actions">
+            <list>
+                <ref bean="loginProcessor"/>
+                <ref bean="jumpProcessor"/>
+                <ref bean="nextProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="loginProcessor" class="com.rain6.luckybug.action.NavigateAction">
+        <property name="uri">
+            <value>
+                <![CDATA[
+	 			http://tj.ganji.com/
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="jumpProcessor" class="com.rain6.luckybug.action.JumpAction">
+        <property name="extractor">
+            <ref bean="hrefExtractorByXPath"/>
+        </property>
+    </bean>
+
+    <bean id="hrefExtractorByXPath" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="waitSecond" value="2"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //a[@gjalog='100000002906000100000010@url=销售']
+	 		]]>
+            </value>
+        </property>
+        <property name="attribute" value="href"></property>
+    </bean>
+
+    <bean id="nextProcessor" class="com.rain6.luckybug.action.NextPageLoopAction">
+        <property name="extractor">
+            <ref bean="nextExtractorByXPath"/>
+        </property>
+        <property name="actions">
+            <list>
+                <ref bean="inPageProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="nextExtractorByXPath" class="com.rain6.luckybug.extractor.ElementsExtractor">
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //a[@class='next']
+	 		]]>
+            </value>
+        </property>
+        <property name="waitSecond" value="2"></property>
+        <property name="waitTimeOutSecond" value="5"></property>
+        <property name="waitUntilAppearExpression">
+            <value>
+                <![CDATA[
+                //a[@class='next']
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="inPageProcessor" class="com.rain6.luckybug.action.InPageLoopAction">
+        <property name="extractor" ref="inPageExtractor">
+        </property>
+        <property name="actions">
+            <list>
+                <ref bean="extractorProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inPageExtractor" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="waitSecond" value="2"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='new-dl-wrapper']/div/dl/dt/a
+            ]]>
+            </value>
+        </property>
+        <property name="attribute" value="href"></property>
+    </bean>
+
+    <bean id="extractorProcessor" class="com.rain6.luckybug.action.ExtractDataAction">
+        <property name="extractors">
+            <list>
+                <ref bean="title"/>
+                <ref bean="company"/>
+                <ref bean="position"/>
+                <ref bean="money"/>
+                <ref bean="phoneImg"/>
+                <ref bean="phoneOwner"/>
+                <ref bean="address"/>
+            </list>
+        </property>
+        <property name="actions">
+            <list>
+                <ref bean="phoneinfo"></ref>
+                <ref bean="phoneExtractor"></ref>
+                <ref bean="back"></ref>
+            </list>
+        </property>
+        <property name="pipeline">
+            <list>
+                <ref bean="console"></ref>
+                <!--<ref bean="mysql"></ref>-->
+            </list>
+        </property>
+    </bean>
+
+    <bean id="title" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="title"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //h1[@class='f24 fc4b h31']
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="company" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="company"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //span[@class='firm-name']/a
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="position" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="position"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //a[@class='nolink']
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="money" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="money"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //em[@class='salary']
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="phoneImg" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="waitSecond" value="2"></property>
+        <property name="name" value="phoneImg"></property>
+        <property name="attribute" value="src"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //span[@id='isShowPhoneTop']/img
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="phoneOwner" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="phoneOwner"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //dl[@class='detail-contact']/dd[2]
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="address" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="address"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //li[@class='fl w-auto']/em
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="phoneinfo" class="com.rain6.luckybug.action.JumpAction">
+        <property name="extractor" ref="phoneExtractorByXPath"></property>
+    </bean>
+
+    <bean id="phoneExtractorByXPath" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="waitSecond" value="2"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='d-c-left']
+	 		]]>
+            </value>
+        </property>
+        <property name="attribute" value="data-pub-resume-url"></property>
+    </bean>
+
+    <bean id="phoneExtractor" class="com.rain6.luckybug.action.ExtractDataAction">
+        <property name="extractors">
+            <list>
+                <ref bean="phone"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="phone" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="phone"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='apply-pos-v2-tit']/b
+	 		]]>
+            </value>
+        </property>
+    </bean>
+    <bean id="back" class="com.rain6.luckybug.action.BackAction"/>
+    <bean id="console" class="com.rain6.luckybug.pipeline.ConsolePipeline"/>
+    <!--<bean id="mysql" class="com.rain6.luckybug.pipeline.RdbmsPipeline">
+        <property name="tableName" value="zpshichangyingxiao"></property>
+    </bean>-->
+</beans>
