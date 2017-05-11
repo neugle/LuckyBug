@@ -12,7 +12,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="LuckyBug" target="1.5" />
-      <module name="LuckyBug3" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
