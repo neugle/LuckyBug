@@ -1,7 +1,7 @@
 package com.rain6.luckybug.action;
 
 import com.rain6.luckybug.extractor.ObjectExtractor;
-import com.rain6.luckybug.webdriver.WebDriver;
+import com.rain6.luckybug.webdriver.LuckyWebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 /***
  * 每一页页面循环
  */
-public class NextPageLoopAction extends WebDriver implements Action {
+public class NextPageLoopAction extends LuckyWebDriver implements Action {
     private ObjectExtractor extractor;
 
     public ObjectExtractor getExtractor() {

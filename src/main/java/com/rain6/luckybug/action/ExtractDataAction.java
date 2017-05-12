@@ -7,14 +7,14 @@ package com.rain6.luckybug.action;
 import com.rain6.luckybug.extractor.StringExtractor;
 import com.rain6.luckybug.model.ResultItems;
 import com.rain6.luckybug.pipeline.Pipeline;
-import com.rain6.luckybug.webdriver.WebDriver;
+import com.rain6.luckybug.webdriver.LuckyWebDriver;
 
 import java.util.List;
 
 /***
  * 提取数据
  */
-public class ExtractDataAction extends WebDriver implements Action {
+public class ExtractDataAction extends LuckyWebDriver implements Action {
 
     //抽取规则
     private List<StringExtractor> extractors;

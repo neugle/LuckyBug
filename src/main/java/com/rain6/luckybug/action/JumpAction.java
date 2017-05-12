@@ -5,14 +5,14 @@ package com.rain6.luckybug.action;
  */
 
 import com.rain6.luckybug.extractor.StringExtractor;
-import com.rain6.luckybug.webdriver.WebDriver;
+import com.rain6.luckybug.webdriver.LuckyWebDriver;
 
 import java.util.List;
 
 /***
  * 跳转页面
  */
-public class JumpAction extends WebDriver implements Action {
+public class JumpAction extends LuckyWebDriver implements Action {
 
     private StringExtractor extractor;
 

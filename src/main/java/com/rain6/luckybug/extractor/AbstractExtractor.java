@@ -1,6 +1,6 @@
 package com.rain6.luckybug.extractor;
 
-import com.rain6.luckybug.webdriver.WebDriver;
+import com.rain6.luckybug.webdriver.LuckyWebDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,7 +17,7 @@ import java.util.List;
 /***
  * 抽取抽象类
  */
-public abstract class AbstractExtractor extends WebDriver implements Extractor {
+public abstract class AbstractExtractor extends LuckyWebDriver implements Extractor {
     private static final Logger logger = LoggerFactory.getLogger(AbstractExtractor.class);
     //抽取元素表达式
     private String expression;

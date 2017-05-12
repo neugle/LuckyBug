@@ -34,6 +34,7 @@ public class LuckyBugThread implements Runnable {
         BeanFactory factory = (BeanFactory) apx;
         Action action = (Action) factory.getBean("rootAction");
         action.doAction();
+        //再次获取当前浏览器实例 并且关闭
         WebDriver webDriver = (WebDriver) factory.getBean("webDriver");
         webDriver.quit();
         logger.info("任务结束");

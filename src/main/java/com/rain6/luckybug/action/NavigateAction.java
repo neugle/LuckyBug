@@ -4,12 +4,12 @@ package com.rain6.luckybug.action;
  * Created by Rain6 on 2017/5/4.
  */
 
-import com.rain6.luckybug.webdriver.WebDriver;
+import com.rain6.luckybug.webdriver.LuckyWebDriver;
 
 /***
  * 打开网页
  */
-public class NavigateAction extends WebDriver implements Action {
+public class NavigateAction extends LuckyWebDriver implements Action {
 
     //网页url
     private String uri;

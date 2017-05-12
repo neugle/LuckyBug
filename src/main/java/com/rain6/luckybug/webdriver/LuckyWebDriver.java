@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /***
  * 获取浏览器本身抽象
  */
-public abstract class WebDriver {
+public abstract class LuckyWebDriver {
     @Autowired
     protected org.openqa.selenium.WebDriver webDriver;
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <bean id="webDriver" class="org.openqa.selenium.chrome.ChromeDriver">
+        <constructor-arg type="org.openqa.selenium.chrome.ChromeOptions" ref="chromeOptions"></constructor-arg>
+    </bean>
+
+    <bean id="chromeOptions" class="com.rain6.luckybug.webdriver.LuckyChromeOptions">
+        <property name="options">
+            <map>
+                <entry key="mobileEmulation">
+                    <map>
+                        <entry key="deviceName" value="Apple iPhone 6"></entry>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 初始任务   -->
+    <bean id="rootAction" class="com.rain6.luckybug.action.RootAction">
+        <property name="actions">
+            <list>
+                <ref bean="loginProcessor"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="loginProcessor" class="com.rain6.luckybug.action.NavigateAction">
+        <property name="uri">
+            <value>
+                <![CDATA[
+	 			http://3g.ganji.com/tj/
+	 		]]>
+            </value>
+        </property>
+    </bean>
+</beans>

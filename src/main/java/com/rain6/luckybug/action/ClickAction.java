@@ -5,7 +5,7 @@ package com.rain6.luckybug.action;
  */
 
 import com.rain6.luckybug.extractor.ObjectExtractor;
-import com.rain6.luckybug.webdriver.WebDriver;
+import com.rain6.luckybug.webdriver.LuckyWebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import java.util.List;
 /***
  * 点击元素
  */
-public class ClickAction extends WebDriver implements Action {
+public class ClickAction extends LuckyWebDriver implements Action {
     private static final Logger logger = LoggerFactory.getLogger(ClickAction.class);
 
     private ObjectExtractor extractor;

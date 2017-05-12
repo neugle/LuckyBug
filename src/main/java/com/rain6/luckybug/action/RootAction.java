@@ -4,7 +4,7 @@ package com.rain6.luckybug.action;
  * Created by Rain6 on 2017/5/4.
  */
 
-import com.rain6.luckybug.webdriver.WebDriver;
+import com.rain6.luckybug.webdriver.LuckyWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +13,7 @@ import java.util.List;
 /***
  * 流程入口
  */
-public class RootAction extends WebDriver implements Action {
+public class RootAction extends LuckyWebDriver implements Action {
     private static final Logger logger = LoggerFactory.getLogger(RootAction.class);
 
     private List<Action> actions;

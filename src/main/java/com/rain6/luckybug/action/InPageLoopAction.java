@@ -1,7 +1,7 @@
 package com.rain6.luckybug.action;
 
 import com.rain6.luckybug.extractor.StringExtractor;
-import com.rain6.luckybug.webdriver.WebDriver;
+import com.rain6.luckybug.webdriver.LuckyWebDriver;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 /***
  * 详细信息页面循环
  */
-public class InPageLoopAction extends WebDriver implements Action {
+public class InPageLoopAction extends LuckyWebDriver implements Action {
     private StringExtractor extractor;
 
     public StringExtractor getExtractor() {
