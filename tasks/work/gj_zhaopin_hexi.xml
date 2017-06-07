@@ -31,6 +31,7 @@
     </bean>
 
     <bean id="nextProcessor" class="com.rain6.luckybug.action.NextPageLoopAction">
+        <property name="waitSecond" value="10"></property>
         <property name="extractor">
             <ref bean="nextExtractorByXPath"/>
         </property>
@@ -41,7 +42,8 @@
         </property>
     </bean>
 
-    <bean id="nextExtractorByXPath" class="com.rain6.luckybug.extractor.ElementsExtractor">
+    <bean id="nextExtractorByXPath" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="waitSecond" value="2"></property>
         <property name="expression">
             <value>
                 <![CDATA[
@@ -49,18 +51,12 @@
 	 		]]>
             </value>
         </property>
-        <property name="waitSecond" value="2"></property>
-        <property name="waitTimeOutSecond" value="5"></property>
-        <property name="waitUntilAppearExpression">
-            <value>
-                <![CDATA[
-                //a[@class='next']
-	 		]]>
-            </value>
-        </property>
+        <property name="attribute" value="href"></property>
     </bean>
 
     <bean id="inPageProcessor" class="com.rain6.luckybug.action.InPageLoopAction">
+        <property name="isback" value="false"></property>
+        <property name="waitSecond" value="2"></property>
         <property name="extractor" ref="inPageExtractor">
         </property>
         <property name="actions">
@@ -96,7 +92,6 @@
         </property>
         <property name="actions">
             <list>
-                <ref bean="phoneinfo"></ref>
                 <ref bean="phoneExtractor"></ref>
                 <ref bean="back"></ref>
             </list>
@@ -104,7 +99,7 @@
         <property name="pipeline">
             <list>
                 <ref bean="console"></ref>
-                <!--<ref bean="mysql"></ref>-->
+                <ref bean="mysql"></ref>
             </list>
         </property>
     </bean>
@@ -188,44 +183,6 @@
         </property>
     </bean>
 
-    <bean id="phoneinfo" class="com.rain6.luckybug.action.JumpAction">
-        <property name="extractor" ref="phoneExtractorByXPath"></property>
-        <property name="cookies">
-            <map>
-                <entry key="GANJISESSID" value="1bd93b7e73910bb643b64a2fb6519b1c"></entry>
-                <entry key="GanjiUserInfo"
-                       value="%7B%22user_id%22%3A679925723%2C%22email%22%3A%22%22%2C%22username%22%3A%22%5Cu508d%5Cu665a%5Cu7684%5Cu5929%5Cu7a7a1%22%2C%22user_name%22%3A%22%5Cu508d%5Cu665a%5Cu7684%5Cu5929%5Cu7a7a1%22%2C%22nickname%22%3A%22%22%7D"></entry>
-                <entry key="GanjiUserName" value="%E5%82%8D%E6%99%9A%E7%9A%84%E5%A4%A9%E7%A9%BA1"></entry>
-                <entry key="Hm_lpvt_655ab0c3b3fdcfa236c3971a300f3f29" value="1496652344"></entry>
-                <entry key="Hm_lpvt_8da53a2eb543c124384f1841999dcbb8" value="1496652674"></entry>
-                <entry key="Hm_lvt_655ab0c3b3fdcfa236c3971a300f3f29" value="1496381684,1496643893"></entry>
-                <entry key="Hm_lvt_8da53a2eb543c124384f1841999dcbb8" value="1496643964,1496644166,1496647353,1496647386"></entry>
-                <entry key="STA_DS" value="1"></entry>
-                <entry key="WantedListPageScreenType" value="1366"></entry>
-                <entry key="__utma" value="32156897.385680270.1496381682.1496649866.1496652293.4"></entry>
-                <entry key="__utmb" value="32156897.8.10.1496652293"></entry>
-                <entry key="__utmc" value="32156897"></entry>
-                <entry key="__utmt" value="1"></entry>
-                <entry key="__utmz" value="32156897.1496652293.4.4.utmcsr=tj.ganji.com|utmccn=(referral)|utmcmd=referral|utmcct=/"></entry>
-                <entry key="_gl_tracker" value="%7B%22ca_source%22%3A%22www.baidu.com%22%2C%22ca_name%22%3A%22-%22%2C%22ca_kw%22%3A%22-%22%2C%22ca_id%22%3A%22-%22%2C%22ca_s%22%3A%22seo_baidu%22%2C%22ca_n%22%3A%22-%22%2C%22ca_i%22%3A%22-%22%2C%22sid%22%3A51880189249%7D"></entry>
-                <entry key="bdshare_firstime" value="1496381692164"></entry>
-                <entry key="bizs" value="%5B%5D"></entry>
-                <entry key="citydomain" value="tj"></entry>
-                <entry key="ganji_login_act" value="1496653327576"></entry>
-                <entry key="ganji_uuid" value="9897192918852967351588"></entry>
-                <entry key="ganji_xuuid" value="ac84ffac-7a8c-4b09-e399-d13954d5b36c.1496381687188"></entry>
-                <entry key="gj_footprint" value="%5B%5B%22%5Cu670d%5Cu52a1%5Cu5458%22%2C%22%5C%2Fzpjudianfuwuyuan%5C%2F%22%5D%2C%5B%22%5Cu5bfc%5Cu8d2d%22%2C%22%5C%2Fzpdaogou%5C%2F%22%5D%2C%5B%22%5Cu9500%5Cu552e%22%2C%22%5C%2Fzpshichangyingxiao%5C%2F%22%5D%5D"></entry>
-                <entry key="lg" value="1"></entry>
-                <entry key="sscode" value="Jh48TcuS32l2YDtxJhJk3dDb"></entry>
-                <entry key="statistics_clientid" value="me"></entry>
-                <entry key="supercookie" value="Awp5BGV1AmVmWQH5MQEwAzMwZGNjMQR1L2IvZGxjAmMxAQN4BQtkBTSuZQquBGH2Mwp%3D"></entry>
-                <entry key="xxzl_tracker" value="AxbmG1uevtpO6EuEziQk4id68fmNrtp68EfhYlEO5kW3cRHIqSZ9b+4hrkOSEU3qAjgSqFGg23oKhTOYAnu4zg=="></entry>
-                <entry key="zhaopin_historyrecords" value="tj%7Czpshichangyingxiao%7C-%2Ctj%7Czpxiaoshoudaibiao%7Chexi%2Ctj%7Czpdaogou%7C-"></entry>
-                <entry key="zhaopin_lasthistory" value="zpshichangyingxiao%7Czpshichangyingxiao"></entry>
-            </map>
-        </property>
-    </bean>
-
     <bean id="phoneExtractorByXPath" class="com.rain6.luckybug.extractor.AttributeExtractor">
         <property name="waitSecond" value="2"></property>
         <property name="expression">
@@ -258,7 +215,7 @@
     </bean>
     <bean id="back" class="com.rain6.luckybug.action.BackAction"/>
     <bean id="console" class="com.rain6.luckybug.pipeline.ConsolePipeline"/>
-    <!--<bean id="mysql" class="com.rain6.luckybug.pipeline.RdbmsPipeline">
+    <bean id="mysql" class="com.rain6.luckybug.pipeline.RdbmsPipeline">
         <property name="tableName" value="zpshichangyingxiao"></property>
-    </bean>-->
+    </bean>
 </beans>

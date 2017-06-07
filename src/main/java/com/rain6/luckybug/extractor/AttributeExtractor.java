@@ -31,7 +31,7 @@ public class AttributeExtractor extends StringExtractor {
             for (WebElement element : elements) {
                 attrs.add(element.getAttribute(this.getAttribute()));
             }
-            this.setExtractResults(attrs);
         }
+        this.setExtractResults(attrs);
     }
 }

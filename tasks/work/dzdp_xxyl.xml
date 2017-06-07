@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <bean id="webDriver" class="org.openqa.selenium.chrome.ChromeDriver"/>
+
+    <!-- 初始任务   -->
+    <bean id="rootAction" class="com.rain6.luckybug.action.ListRootAction">
+        <property name="urls">
+            <list>
+                <value>https://www.dianping.com/search/category/10/30/g135</value>
+                <value>https://www.dianping.com/search/category/10/30/g141</value>
+                <value>https://www.dianping.com/search/category/10/30/g140</value>
+                <value>https://www.dianping.com/search/category/10/30/g132</value>
+                <value>https://www.dianping.com/search/category/10/30/g20040</value>
+                <value>https://www.dianping.com/search/category/10/30/g20041</value>
+                <value>https://www.dianping.com/search/category/10/30/g133</value>
+                <value>https://www.dianping.com/search/category/10/30/g2754</value>
+                <value>https://www.dianping.com/search/category/10/30/g144</value>
+                <value>https://www.dianping.com/search/category/10/30/g20042</value>
+                <value>https://www.dianping.com/search/category/10/30/g20039</value>
+                <value>https://www.dianping.com/search/category/10/30/g137</value>
+                <value>https://www.dianping.com/search/category/10/30/g20038</value>
+                <value>https://www.dianping.com/search/category/10/30/g156</value>
+                <value>https://www.dianping.com/search/category/10/30/g134</value>
+                <value>https://www.dianping.com/search/category/10/30/g32732</value>
+                <value>https://www.dianping.com/search/category/10/30/g6694</value>
+                <value>https://www.dianping.com/search/category/10/30/g142</value>
+                <value>https://www.dianping.com/search/category/10/30/g2827</value>
+                <value>https://www.dianping.com/search/category/10/30/g33857</value>
+                <value>https://www.dianping.com/search/category/10/30/g26490</value>
+            </list>
+        </property>
+        <property name="seedAction">
+            <bean class="com.rain6.luckybug.action.NavigateAction"></bean>
+        </property>
+        <property name="actions">
+            <list>
+                <ref bean="nextProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="nextProcessor" class="com.rain6.luckybug.action.NextPageLoopAction">
+        <property name="waitSecond" value="10"></property>
+        <property name="extractor">
+            <ref bean="nextExtractorByXPath"/>
+        </property>
+        <property name="actions">
+            <list>
+                <ref bean="inPageProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="nextExtractorByXPath" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="waitSecond" value="2"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //a[@class='next']
+	 		]]>
+            </value>
+        </property>
+        <property name="attribute" value="href"></property>
+    </bean>
+
+    <bean id="inPageProcessor" class="com.rain6.luckybug.action.InPageLoopAction">
+        <property name="isback" value="false"></property>
+        <property name="waitSecond" value="2"></property>
+        <property name="extractor" ref="inPageExtractor"></property>
+        <property name="actions">
+            <list>
+                <ref bean="extractorProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="inPageExtractor" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="waitSecond" value="2"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='shop-list J_shop-list shop-all-list']/ul/li/div[@class='txt']/div[@class='tit']/a[1]
+            ]]>
+            </value>
+        </property>
+        <property name="attribute" value="href"></property>
+    </bean>
+
+    <bean id="extractorProcessor" class="com.rain6.luckybug.action.ExtractDataAction">
+        <property name="extractors">
+            <list>
+                <ref bean="name"/>
+                <ref bean="type"/>
+                <ref bean="region"/>
+                <ref bean="address"/>
+                <ref bean="phone"/>
+                <ref bean="avgPrice"/>
+                <ref bean="tastes"/>
+                <ref bean="environment"/>
+                <ref bean="service"/>
+            </list>
+        </property>
+        <property name="pipeline">
+            <list>
+                <ref bean="console"></ref>
+                <ref bean="mysql"></ref>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="name" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="name"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='breadcrumb']/span
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="type" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="type"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='breadcrumb']/a[3]
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="region" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="region"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='breadcrumb']/a[2]
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="address" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="address"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='expand-info address']/span[@class='item']
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="phone" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="phone"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //p[@class='expand-info tel']/span[@class='item']
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="avgPrice" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="avgPrice"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //span[@id='avgPriceTitle']
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="tastes" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="tastes"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //span[@id='comment_score']/span[1]
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="environment" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="environment"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //span[@id='comment_score']/span[2]
+	 		]]>
+            </value>
+        </property>
+    </bean>
+    <bean id="service" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="service"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //span[@id='comment_score']/span[3]
+	 		]]>
+            </value>
+        </property>
+    </bean>
+    <bean id="console" class="com.rain6.luckybug.pipeline.ConsolePipeline"/>
+    <bean id="mysql" class="com.rain6.luckybug.pipeline.RdbmsPipeline">
+        <property name="tableName" value="dzdp_xxyl"></property>
+    </bean>
+</beans>

@@ -21,8 +21,8 @@ public class TextExtractor extends StringExtractor {
             for (WebElement element : elements) {
                 texts.add(element.getText());
             }
-            //抽取内容
-            this.setExtractResults(texts);
         }
+        //抽取内容
+        this.setExtractResults(texts);
     }
 }

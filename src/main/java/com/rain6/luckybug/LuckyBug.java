@@ -22,11 +22,12 @@ public class LuckyBug {
     //任务数
     private static List<String> tasksXmlPath = new ArrayList<String>();
     //并行线程数
-    private static int nThreads = 3;
+    private static int nThreads = 1;
 
     public static void main(String[] args) {
         //设置浏览器驱动位置
-        System.getProperties().setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+        //System.getProperties().setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+        System.getProperties().setProperty("webdriver.chrome.driver", "../driver/chromedriver.exe");
         logger.info("浏览器初始化完成");
         //初始化任务
         init();
@@ -40,6 +41,7 @@ public class LuckyBug {
     }
 
     private static void init() {
-        tasksXmlPath.add("tasks/test/test.xml");
+        //tasksXmlPath.add("tasks/work/gj_zhaopin_hexi.xml");
+        tasksXmlPath.add("../conf/gj_zhaopin_hexi.xml");
     }
 }

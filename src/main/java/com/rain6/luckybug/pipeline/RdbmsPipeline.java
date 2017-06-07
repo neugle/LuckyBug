@@ -44,13 +44,14 @@ public class RdbmsPipeline implements Pipeline {
         try {
             int result = runner.update(sql);
             if (result > 0) {
-                logger.info(sql);
-                logger.info("导入成功");
+                //logger.info(sql);
+                //logger.info("导入成功");
             } else {
                 logger.warn("导入失败");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }
