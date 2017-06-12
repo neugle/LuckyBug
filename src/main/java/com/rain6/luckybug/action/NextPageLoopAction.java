@@ -4,6 +4,8 @@ import com.rain6.luckybug.extractor.ObjectExtractor;
 import com.rain6.luckybug.extractor.StringExtractor;
 import com.rain6.luckybug.webdriver.LuckyWebDriver;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
  * 每一页页面循环
  */
 public class NextPageLoopAction extends LuckyWebDriver implements Action {
+    private static final Logger logger = LoggerFactory.getLogger(NextPageLoopAction.class);
     private StringExtractor extractor;
 
     public StringExtractor getExtractor() {
@@ -68,7 +71,13 @@ public class NextPageLoopAction extends LuckyWebDriver implements Action {
             this.getExtractor().doExtractor();
             List<String> elementList = this.getExtractor().getExtractResults();
             if (elementList != null && elementList.size() > 0) {
-                this.webDriver.navigate().to(elementList.get(0));
+                try {
+                    logger.info("InPageLoopAction Info:from " + this.webDriver.getCurrentUrl() + " to " + elementList.get(0));
+                    this.webDriver.navigate().to(elementList.get(0));
+                } catch (Exception ex) {
+                    //防止超时
+                    logger.warn(elementList.get(0) + "页面加载超时");
+                }
             } else {
                 //若没有下一页按钮则退出
                 break;

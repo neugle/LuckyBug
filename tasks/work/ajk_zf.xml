@@ -67,16 +67,17 @@
         <property name="expression">
             <value>
                 <![CDATA[
-                //div[@class='maincontent']/div[@class='list-content']/div[@class='zu-itemmod']/ul/li/div[@class='txt']/div[@class='tit']/a
+                //div[@id='list-content']/div
             ]]>
             </value>
         </property>
-        <property name="attribute" value="href"></property>
+        <property name="attribute" value="link"></property>
     </bean>
 
     <bean id="extractorProcessor" class="com.rain6.luckybug.action.ExtractDataAction">
         <property name="extractors">
             <list>
+                <ref bean="title"/>
                 <ref bean="name"/>
                 <ref bean="area"/>
                 <ref bean="street"/>
@@ -85,6 +86,7 @@
                 <ref bean="type"/>
                 <ref bean="way"/>
                 <ref bean="layout"/>
+                <ref bean="price"/>
                 <ref bean="contacts"/>
                 <ref bean="phone"/>
                 <ref bean="company"/>
@@ -92,9 +94,20 @@
         </property>
         <property name="pipeline">
             <list>
-                <ref bean="console"></ref>
+                <!--<ref bean="console"></ref>-->
                 <ref bean="mysql"></ref>
             </list>
+        </property>
+    </bean>
+
+    <bean id="title" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="title"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='tit cf']/h3
+	 		]]>
+            </value>
         </property>
     </bean>
 
@@ -103,7 +116,51 @@
         <property name="expression">
             <value>
                 <![CDATA[
-                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='litem fl']
+                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='litem fl']/dl[@class='p_phrase cf'][5]/dd/a
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="area" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="area"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='litem fl']/dl[@class='p_phrase cf'][6]/dd/a[1]
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="street" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="street"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='litem fl']/dl[@class='p_phrase cf'][6]/dd/a[2]
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="acreage" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="acreage"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='ritem fr']/dl[@class='p_phrase cf'][2]/dd
+	 		]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="floor" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="floor"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='ritem fr']/dl[@class='p_phrase cf'][4]/dd
 	 		]]>
             </value>
         </property>
@@ -114,89 +171,75 @@
         <property name="expression">
             <value>
                 <![CDATA[
-                //div[@class='breadcrumb']/a[3]
+                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='ritem fr']/dl[@class='p_phrase cf'][5]/dd
 	 		]]>
             </value>
         </property>
     </bean>
 
-    <bean id="region" class="com.rain6.luckybug.extractor.TextExtractor">
-        <property name="name" value="region"></property>
+    <bean id="way" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="way"></property>
         <property name="expression">
             <value>
                 <![CDATA[
-                //div[@class='breadcrumb']/a[2]
+                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='litem fl']/dl[@class='p_phrase cf'][4]/dd
 	 		]]>
             </value>
         </property>
     </bean>
 
-    <bean id="address" class="com.rain6.luckybug.extractor.TextExtractor">
-        <property name="name" value="address"></property>
+    <bean id="layout" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="layout"></property>
         <property name="expression">
             <value>
                 <![CDATA[
-                //div[@class='expand-info address']/span[@class='item']
+                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='litem fl']/dl[@class='p_phrase cf'][3]/dd
 	 		]]>
             </value>
         </property>
     </bean>
-
+    <bean id="price" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="price"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='lbox']/div[@class='pinfo']/div[@class='box']/div[@class='phraseobox cf']/div[@class='litem fl']/dl[@class='p_phrase cf'][1]/dd/strong/span
+	 		]]>
+            </value>
+        </property>
+    </bean>
+    <bean id="contacts" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="contacts"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //h2[@id='broker_true_name']
+	 		]]>
+            </value>
+        </property>
+    </bean>
     <bean id="phone" class="com.rain6.luckybug.extractor.TextExtractor">
         <property name="name" value="phone"></property>
         <property name="expression">
             <value>
                 <![CDATA[
-                //p[@class='expand-info tel']/span[@class='item']
+                //p[@class='broker-mobile']
 	 		]]>
             </value>
         </property>
     </bean>
-
-    <bean id="avgPrice" class="com.rain6.luckybug.extractor.TextExtractor">
-        <property name="name" value="avgPrice"></property>
+    <bean id="company" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="name" value="company"></property>
         <property name="expression">
             <value>
                 <![CDATA[
-                //span[@id='avgPriceTitle']
+                //div[@class='broker-company']/p[1]/a
 	 		]]>
             </value>
         </property>
     </bean>
-
-    <bean id="tastes" class="com.rain6.luckybug.extractor.TextExtractor">
-        <property name="name" value="tastes"></property>
-        <property name="expression">
-            <value>
-                <![CDATA[
-                //span[@id='comment_score']/span[1]
-	 		]]>
-            </value>
-        </property>
-    </bean>
-
-    <bean id="environment" class="com.rain6.luckybug.extractor.TextExtractor">
-        <property name="name" value="environment"></property>
-        <property name="expression">
-            <value>
-                <![CDATA[
-                //span[@id='comment_score']/span[2]
-	 		]]>
-            </value>
-        </property>
-    </bean>
-    <bean id="service" class="com.rain6.luckybug.extractor.TextExtractor">
-        <property name="name" value="service"></property>
-        <property name="expression">
-            <value>
-                <![CDATA[
-                //span[@id='comment_score']/span[3]
-	 		]]>
-            </value>
-        </property>
-    </bean>
-    <bean id="console" class="com.rain6.luckybug.pipeline.ConsolePipeline"/>
+    <!--<bean id="console" class="com.rain6.luckybug.pipeline.ConsolePipeline"/>-->
     <bean id="mysql" class="com.rain6.luckybug.pipeline.RdbmsPipeline">
-        <property name="tableName" value="dzdp_ms"></property>
+        <property name="tableName" value="ajk_zf"></property>
     </bean>
 </beans>

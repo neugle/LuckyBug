@@ -19,7 +19,10 @@ public class TextExtractor extends StringExtractor {
         List<String> texts = new ArrayList<String>();
         if (elements != null && elements.size() > 0) {
             for (WebElement element : elements) {
-                texts.add(element.getText());
+                String text = element.getText();
+                if (text != null && !text.trim().equals("")) {
+                    texts.add(element.getText());
+                }
             }
         }
         //抽取内容

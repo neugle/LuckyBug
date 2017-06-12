@@ -41,7 +41,7 @@ public class LuckyBug {
     }
 
     private static void init() {
-        //tasksXmlPath.add("tasks/work/gj_zhaopin_hexi.xml");
-        tasksXmlPath.add("../conf/gj_zhaopin_hexi.xml");
+        //tasksXmlPath.add("tasks/work/ajk_zf.xml");
+        tasksXmlPath.add("../conf/ajk_zf.xml");
     }
 }

@@ -2,6 +2,8 @@ package com.rain6.luckybug.action;
 
 import com.rain6.luckybug.extractor.StringExtractor;
 import com.rain6.luckybug.webdriver.LuckyWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
  * 详细信息页面循环
  */
 public class InPageLoopAction extends LuckyWebDriver implements Action {
+    private static final Logger logger = LoggerFactory.getLogger(InPageLoopAction.class);
+
     private StringExtractor extractor;
 
     public StringExtractor getExtractor() {
@@ -61,8 +65,14 @@ public class InPageLoopAction extends LuckyWebDriver implements Action {
         String currentUrl = this.webDriver.getCurrentUrl();
         if (elementList != null && elementList.size() > 0) {
             for (String element : elementList) {
-                //进入详细页面
-                this.webDriver.navigate().to(element);
+                try {
+                    //进入详细页面
+                    logger.info("InPageLoopAction Info:from " + this.webDriver.getCurrentUrl() + " to " + element);
+                    this.webDriver.navigate().to(element);
+                } catch (Exception ex) {
+                    //防止超时
+                    logger.warn(element + "页面加载超时");
+                }
                 //执行之前是否等待
                 if (this.getWaitSecond() != 0) {
                     try {
@@ -84,11 +94,18 @@ public class InPageLoopAction extends LuckyWebDriver implements Action {
             }
             //循环结束后返回分页页面
             if (!this.getIsback()) {
-                this.webDriver.navigate().to(currentUrl);
+                try {
+                    logger.info("InPageLoopAction Info:from " + this.webDriver.getCurrentUrl() + " to " + currentUrl);
+                    this.webDriver.navigate().to(currentUrl);
+                } catch (Exception ex) {
+                    //防止超时
+                    logger.warn(currentUrl + "页面加载超时");
+                }
             }
         } else {
             //由于无法抽取元素 程序无法向下进行 抛出异常
-            throw new RuntimeException(this.webDriver.getCurrentUrl() + "页面处理跳转失败");
+            //throw new RuntimeException("InPageLoopAction Error:");
+            logger.warn("InPageLoopAction Error:" + this.webDriver.getCurrentUrl() + "页面抽取不到相关元素");
         }
     }
 }

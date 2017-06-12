@@ -29,7 +29,10 @@ public class AttributeExtractor extends StringExtractor {
         List<String> attrs = new ArrayList<String>();
         if (elements != null && elements.size() > 0) {
             for (WebElement element : elements) {
-                attrs.add(element.getAttribute(this.getAttribute()));
+                String attr = element.getAttribute(this.getAttribute());
+                if (attr != null && !attr.trim().equals("")) {
+                    attrs.add(attr);
+                }
             }
         }
         this.setExtractResults(attrs);

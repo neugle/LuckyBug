@@ -9,6 +9,8 @@ import com.rain6.luckybug.model.ResultItems;
 import com.rain6.luckybug.pipeline.Pipeline;
 import com.rain6.luckybug.webdriver.LuckyWebDriver;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /***
@@ -52,6 +54,8 @@ public class ExtractDataAction extends LuckyWebDriver implements Action {
     public void doAction() {
         //爬取当前页信息
         if (this.getExtractors() != null && this.getExtractors().size() > 0) {
+            //记录当前url
+            ResultItems.put("url", this.webDriver.getCurrentUrl());
             for (StringExtractor extractor : extractors) {
                 extractor.doExtractor();
                 List<String> results = extractor.getExtractResults();
@@ -60,6 +64,8 @@ public class ExtractDataAction extends LuckyWebDriver implements Action {
                     ResultItems.put(extractor.getName(), results.get(0));
                 }
             }
+            //记录当前时间
+            ResultItems.put("cdate", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
         }
 
         //继续当前页面操作
@@ -76,8 +82,9 @@ public class ExtractDataAction extends LuckyWebDriver implements Action {
                     pipeline.process(ResultItems.getAll());
                 }
             }
-            //清空集合
-            ResultItems.clear();
         }
+
+        //清空集合
+        ResultItems.clear();
     }
 }

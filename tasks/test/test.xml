@@ -190,7 +190,7 @@
 
     <bean id="phoneinfo" class="com.rain6.luckybug.action.JumpAction">
         <property name="extractor" ref="phoneExtractorByXPath"></property>
-        <property name="cookies">
+        <!--<property name="cookies">
             <map>
                 <entry key="GANJISESSID" value="1bd93b7e73910bb643b64a2fb6519b1c"></entry>
                 <entry key="GanjiUserInfo"
@@ -223,7 +223,7 @@
                 <entry key="zhaopin_historyrecords" value="tj%7Czpshichangyingxiao%7C-%2Ctj%7Czpxiaoshoudaibiao%7Chexi%2Ctj%7Czpdaogou%7C-"></entry>
                 <entry key="zhaopin_lasthistory" value="zpshichangyingxiao%7Czpshichangyingxiao"></entry>
             </map>
-        </property>
+        </property>-->
     </bean>
 
     <bean id="phoneExtractorByXPath" class="com.rain6.luckybug.extractor.AttributeExtractor">
