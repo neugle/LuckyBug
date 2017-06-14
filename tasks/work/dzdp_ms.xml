@@ -8,13 +8,33 @@
     <context:annotation-config/>
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
-    <bean id="webDriver" class="org.openqa.selenium.chrome.ChromeDriver"/>
+    <bean id="webDriver" class="org.openqa.selenium.chrome.ChromeDriver">
+        <constructor-arg type="org.openqa.selenium.chrome.ChromeOptions" ref="chromeOptions"></constructor-arg>
+    </bean>
+
+    <bean id="chromeOptions" class="com.rain6.luckybug.webdriver.LuckyChromeOptions">
+        <property name="options">
+            <map>
+                <entry key="prefs">
+                    <map>
+                        <entry key="profile.default_content_setting_values">
+                            <map>
+                                <entry key="images">
+                                    <value type="java.lang.Integer">2</value>
+                                </entry>
+                            </map>
+                        </entry>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
 
     <!-- 初始任务   -->
     <bean id="rootAction" class="com.rain6.luckybug.action.ListRootAction">
         <property name="urls">
             <list>
-                <value>https://www.dianping.com/search/category/10/10/g508</value>
+                <!--<value>https://www.dianping.com/search/category/10/10/g508</value>
                 <value>https://www.dianping.com/search/category/10/10/g110</value>
                 <value>https://www.dianping.com/search/category/10/10/g111</value>
                 <value>https://www.dianping.com/search/category/10/10/g112</value>
@@ -45,7 +65,8 @@
                 <value>https://www.dianping.com/search/category/10/10/g115</value>
                 <value>https://www.dianping.com/search/category/10/10/g6743</value>
                 <value>https://www.dianping.com/search/category/10/10/g107</value>
-                <value>https://www.dianping.com/search/category/10/10/g118</value>
+                <value>https://www.dianping.com/search/category/10/10/g118</value>-->
+                <value>https://www.dianping.com/search/category/10/10/g110p4</value>
             </list>
         </property>
         <property name="seedAction">
@@ -89,6 +110,7 @@
         <property name="actions">
             <list>
                 <ref bean="extractorProcessor"/>
+                <ref bean="conditionProcessor"/>
             </list>
         </property>
     </bean>
@@ -121,7 +143,6 @@
         </property>
         <property name="pipeline">
             <list>
-                <ref bean="console"></ref>
                 <ref bean="mysql"></ref>
             </list>
         </property>
@@ -224,8 +245,168 @@
             </value>
         </property>
     </bean>
-    <bean id="console" class="com.rain6.luckybug.pipeline.ConsolePipeline"/>
+    <!--<bean id="console" class="com.rain6.luckybug.pipeline.ConsolePipeline"/>-->
     <bean id="mysql" class="com.rain6.luckybug.pipeline.RdbmsPipeline">
         <property name="tableName" value="dzdp_ms"></property>
+    </bean>
+
+    <bean id="conditionProcessor" class="com.rain6.luckybug.action.ConditionAction">
+        <property name="extractor">
+            <ref bean="moreExtractor"></ref>
+        </property>
+        <property name="ifActions">
+            <list>
+                <ref bean="ifJumpAction"></ref>
+                <ref bean="ifNextProcessor"></ref>
+            </list>
+        </property>
+        <property name="elseActions">
+            <list>
+                <ref bean="elseMoreExtractorProcessor"></ref>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="moreExtractor" class="com.rain6.luckybug.extractor.ElementsExtractor">
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //p[@class='comment-all']/a
+            ]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="ifJumpAction" class="com.rain6.luckybug.action.JumpAction">
+        <property name="extractor">
+            <bean class="com.rain6.luckybug.extractor.AttributeExtractor">
+                <property name="expression" value="//p[@class='comment-all']/a"/>
+                <property name="attribute" value="href"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="ifNextProcessor" class="com.rain6.luckybug.action.NextPageLoopAction">
+        <property name="waitSecond" value="2"></property>
+        <property name="extractor">
+            <ref bean="ifNextExtractorByXPath"/>
+        </property>
+        <property name="actions">
+            <list>
+                <ref bean="ifMoreExtractorProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="ifNextExtractorByXPath" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="waitSecond" value="2"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //a[@class='NextPage']
+	 		]]>
+            </value>
+        </property>
+        <property name="attribute" value="href"></property>
+    </bean>
+
+    <bean id="ifMoreExtractorProcessor" class="com.rain6.luckybug.action.ExtractMoreDataAction">
+        <property name="itemsExtractor">
+            <ref bean="ifItemsExtractor"></ref>
+        </property>
+        <property name="stringExtractor">
+            <ref bean="ifStringExtractor"></ref>
+        </property>
+        <property name="pipeline">
+            <list>
+                <!--<ref bean="console"></ref>-->
+                <ref bean="mysql1"></ref>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="ifItemsExtractor" class="com.rain6.luckybug.extractor.ItemsExtractor">
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='comment-list']/ul/li
+            ]]>
+            </value>
+        </property>
+        <property name="xpaths">
+            <list>
+                <map>
+                    <entry key="comment_user" value="//p[@class='name']/a"></entry>
+                </map>
+                <map>
+                    <entry key="comment_data" value="//span[@class='time']"></entry>
+                </map>
+                <map>
+                    <entry key="comment" value="//div[@class='J_brief-cont']"></entry>
+                </map>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="ifStringExtractor" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='revitew-title']/h1/a
+            ]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="elseMoreExtractorProcessor" class="com.rain6.luckybug.action.ExtractMoreDataAction">
+        <property name="itemsExtractor">
+            <ref bean="elseItemsExtractor"></ref>
+        </property>
+        <property name="stringExtractor">
+            <ref bean="elseStringExtractor"></ref>
+        </property>
+        <property name="pipeline">
+            <list>
+                <!--<ref bean="console"></ref>-->
+                <ref bean="mysql1"></ref>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="elseItemsExtractor" class="com.rain6.luckybug.extractor.ItemsExtractor">
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //li[@class='comment-item']
+            ]]>
+            </value>
+        </property>
+        <property name="xpaths">
+            <list>
+                <map>
+                    <entry key="comment_user" value="//p[@class='user-info']/a[@class='name']"></entry>
+                </map>
+                <map>
+                    <entry key="comment_data" value="//span[@class='time']"></entry>
+                </map>
+                <map>
+                    <entry key="comment" value="//p[@class='desc']"></entry>
+                </map>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="elseStringExtractor" class="com.rain6.luckybug.extractor.TextExtractor">
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='breadcrumb']/span
+            ]]>
+            </value>
+        </property>
+    </bean>
+
+    <bean id="mysql1" class="com.rain6.luckybug.pipeline.RdbmsPipeline">
+        <property name="tableName" value="dzdp_ms_pl"></property>
     </bean>
 </beans>

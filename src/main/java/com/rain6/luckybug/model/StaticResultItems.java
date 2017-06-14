@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Rain6 on 2017/6/13.
+ * Created by Rain6 on 2017/4/20.
  */
-public class ResultItems {
+public class StaticResultItems {
     //结果
-    private Map<String, Object> fields = new HashMap<String, Object>();
+    private static Map<String, Object> fields = new HashMap<String, Object>();
 
     /***
      * 插入结果集
@@ -16,7 +16,7 @@ public class ResultItems {
      * @param value
      * @param <T>
      */
-    public <T> void put(String key, T value) {
+    public static <T> void put(String key, T value) {
         fields.put(key, value);
     }
 
@@ -26,7 +26,7 @@ public class ResultItems {
      * @param <T>
      * @return
      */
-    public <T> T get(String key) {
+    public static <T> T get(String key) {
         Object o = fields.get(key);
         if (o == null) {
             return null;
@@ -38,19 +38,11 @@ public class ResultItems {
      * 获取结果集
      * @return
      */
-    public Map<String, Object> getAll() {
+    public static Map<String, Object> getAll() {
         return fields;
     }
 
-    /***
-     * 填充结果集
-     * @param fields
-     */
-    public void fill(Map<String, Object> fields) {
-        this.fields = fields;
-    }
-
-    public void clear() {
+    public static void clear() {
         fields = new HashMap<String, Object>();
     }
 }

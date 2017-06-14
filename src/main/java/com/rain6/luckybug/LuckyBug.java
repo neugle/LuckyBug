@@ -26,8 +26,8 @@ public class LuckyBug {
 
     public static void main(String[] args) {
         //设置浏览器驱动位置
-        //System.getProperties().setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
-        System.getProperties().setProperty("webdriver.chrome.driver", "../driver/chromedriver.exe");
+        System.getProperties().setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+        //System.getProperties().setProperty("webdriver.chrome.driver", "../driver/chromedriver.exe");
         logger.info("浏览器初始化完成");
         //初始化任务
         init();
@@ -41,7 +41,7 @@ public class LuckyBug {
     }
 
     private static void init() {
-        //tasksXmlPath.add("tasks/work/ajk_zf.xml");
-        tasksXmlPath.add("../conf/ajk_zf.xml");
+        tasksXmlPath.add("tasks/work/dzdp_ms.xml");
+        //tasksXmlPath.add("../conf/dzdp_ms.xml");
     }
 }

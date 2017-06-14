@@ -1,7 +1,5 @@
 package com.rain6.luckybug.pipeline;
 
-import com.rain6.luckybug.model.ResultItems;
-
 import java.util.Map;
 
 /**

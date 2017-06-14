@@ -35,7 +35,7 @@ public class ClickAction extends LuckyWebDriver implements Action {
             elementList.get(0).click();
         } else {
             //由于无法抽取元素 程序无法向下进行 抛出异常
-            throw new RuntimeException(this.webDriver.getCurrentUrl() + "页面处理点击事件失败");
+            //throw new RuntimeException(this.webDriver.getCurrentUrl() + "页面处理点击事件失败");
         }
     }
 }

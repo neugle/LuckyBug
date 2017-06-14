@@ -46,22 +46,22 @@ public class ListRootAction extends LuckyWebDriver implements Action {
     }
 
     public void doAction() {
-        try {
-            if (getUrls() != null && getUrls().size() > 0) {
-                for (String url : getUrls()) {
-                    if (this.seedAction != null) {
-                        this.seedAction.setUri(url);
-                        this.seedAction.doAction();
-                    }
-                    if (getActions() != null && getActions().size() > 0) {
-                        for (Action action : getActions()) {
-                            action.doAction();
-                        }
+        //try {
+        if (getUrls() != null && getUrls().size() > 0) {
+            for (String url : getUrls()) {
+                if (this.seedAction != null) {
+                    this.seedAction.setUri(url);
+                    this.seedAction.doAction();
+                }
+                if (getActions() != null && getActions().size() > 0) {
+                    for (Action action : getActions()) {
+                        action.doAction();
                     }
                 }
             }
-        } catch (Exception ex) {
-            logger.error(ex.getMessage());
         }
+        /*} catch (Exception ex) {
+            logger.error(ex.getMessage());
+        }*/
     }
 }

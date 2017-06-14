@@ -5,7 +5,7 @@ package com.rain6.luckybug.action;
  */
 
 import com.rain6.luckybug.extractor.StringExtractor;
-import com.rain6.luckybug.model.ResultItems;
+import com.rain6.luckybug.model.StaticResultItems;
 import com.rain6.luckybug.pipeline.Pipeline;
 import com.rain6.luckybug.webdriver.LuckyWebDriver;
 
@@ -55,17 +55,17 @@ public class ExtractDataAction extends LuckyWebDriver implements Action {
         //爬取当前页信息
         if (this.getExtractors() != null && this.getExtractors().size() > 0) {
             //记录当前url
-            ResultItems.put("url", this.webDriver.getCurrentUrl());
+            StaticResultItems.put("url", this.webDriver.getCurrentUrl());
             for (StringExtractor extractor : extractors) {
                 extractor.doExtractor();
                 List<String> results = extractor.getExtractResults();
                 if (results != null && results.size() > 0) {
                     //装载数据
-                    ResultItems.put(extractor.getName(), results.get(0));
+                    StaticResultItems.put(extractor.getName(), results.get(0));
                 }
             }
             //记录当前时间
-            ResultItems.put("cdate", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+            StaticResultItems.put("cdate", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
         }
 
         //继续当前页面操作
@@ -78,13 +78,13 @@ public class ExtractDataAction extends LuckyWebDriver implements Action {
         //通过管道输出
         if (this.getPipeline() != null && this.getPipeline().size() > 0) {
             for (Pipeline pipeline : this.getPipeline()) {
-                if (ResultItems.getAll().size() > 0) {
-                    pipeline.process(ResultItems.getAll());
+                if (StaticResultItems.getAll().size() > 0) {
+                    pipeline.process(StaticResultItems.getAll());
                 }
             }
         }
 
         //清空集合
-        ResultItems.clear();
+        StaticResultItems.clear();
     }
 }

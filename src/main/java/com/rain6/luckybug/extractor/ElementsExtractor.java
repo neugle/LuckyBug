@@ -10,8 +10,6 @@ package com.rain6.luckybug.extractor;
 public class ElementsExtractor extends ObjectExtractor {
     @Override
     public void afterExtractor() {
-        if (elements != null && elements.size() > 0) {
-            this.setExtractResults(elements);
-        }
+        this.setExtractResults(elements);
     }
 }

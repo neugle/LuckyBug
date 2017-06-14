@@ -28,7 +28,7 @@ public class ShieldImage {
         options.setExperimentalOption("prefs", preferences);
         WebDriver driver = new ChromeDriver(options);
         //WebDriver driver = new ChromeDriver();
-        driver.get("https://tj.zu.anjuke.com/fangyuan/1070138055?from=Filter_1&hfilter=filterlist");
+        driver.get("https://www.dianping.com/search/category/10/10/g110p4");
 
     }
 }
