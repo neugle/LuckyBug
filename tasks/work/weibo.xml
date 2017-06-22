@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <bean id="webDriver" class="org.openqa.selenium.chrome.ChromeDriver">
+        <constructor-arg type="org.openqa.selenium.chrome.ChromeOptions" ref="chromeOptions"></constructor-arg>
+    </bean>
+
+    <bean id="chromeOptions" class="com.rain6.luckybug.webdriver.LuckyChromeOptions">
+        <property name="options">
+            <map>
+                <entry key="prefs">
+                    <map>
+                        <entry key="profile.default_content_setting_values">
+                            <map>
+                                <entry key="images">
+                                    <value type="java.lang.Integer">2</value>
+                                </entry>
+                            </map>
+                        </entry>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 初始任务   -->
+    <bean id="rootAction" class="com.rain6.luckybug.action.RootAction">
+        <property name="actions">
+            <list>
+                <ref bean="loginProcessor"/>
+                <ref bean="nameEnter"/>
+                <ref bean="pwdEnter"/>
+                <ref bean="loginClick"/>
+                <ref bean="searchEnter"/>
+                <ref bean="searchClick"/>
+                <ref bean="nextProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="loginProcessor" class="com.rain6.luckybug.action.NavigateAction">
+        <property name="uri" value="http://weibo.com/"/>
+    </bean>
+
+    <bean id="nameEnter" class="com.rain6.luckybug.action.EnterTextAction">
+        <property name="extractor" ref="nameExtractor"/>
+        <property name="waitSecond" value="3"/>
+        <property name="fillContent" value="18322342372"/>
+    </bean>
+
+    <bean id="nameExtractor" class="com.rain6.luckybug.extractor.ElementsExtractor">
+        <property name="waitSecond" value="2"/>
+        <property name="expression" value="//input[@id='loginname']"/>
+    </bean>
+
+    <bean id="pwdEnter" class="com.rain6.luckybug.action.EnterTextAction">
+        <property name="extractor" ref="pwdExtractor"/>
+        <property name="waitSecond" value="3"/>
+        <property name="fillContent" value="18322342372"/>
+    </bean>
+
+    <bean id="pwdExtractor" class="com.rain6.luckybug.extractor.ElementsExtractor">
+        <property name="waitSecond" value="2"/>
+        <property name="expression" value="//input[@type='password']"/>
+    </bean>
+
+    <bean id="loginClick" class="com.rain6.luckybug.action.ClickAction">
+        <property name="extractor" ref="loginClickExtractor"/>
+        <property name="waitSecond" value="3"/>
+    </bean>
+
+    <bean id="loginClickExtractor" class="com.rain6.luckybug.extractor.ElementsExtractor">
+        <property name="waitSecond" value="2"/>
+        <property name="expression" value="//div[@class='info_list login_btn']/a"/>
+    </bean>
+
+    <bean id="searchEnter" class="com.rain6.luckybug.action.EnterTextAction">
+        <property name="extractor" ref="searchExtractor"/>
+        <property name="waitSecond" value="3"/>
+        <property name="fillContent" value="天津身边事"/>
+    </bean>
+
+    <bean id="searchExtractor" class="com.rain6.luckybug.extractor.ElementsExtractor">
+        <property name="waitSecond" value="2"/>
+        <property name="expression" value="//input[@node-type='searchInput']"/>
+    </bean>
+
+    <bean id="searchClick" class="com.rain6.luckybug.action.ClickAction">
+        <property name="extractor" ref="searchClickExtractor"/>
+        <property name="waitSecond" value="3"/>
+    </bean>
+
+    <bean id="searchClickExtractor" class="com.rain6.luckybug.extractor.ElementsExtractor">
+        <property name="waitSecond" value="2"/>
+        <property name="expression" value="//a[@node-type='searchSubmit']"/>
+    </bean>
+
+    <bean id="nextProcessor" class="com.rain6.luckybug.action.NextPageLoopAction">
+        <property name="waitSecond" value="10"></property>
+        <property name="extractor">
+            <ref bean="nextExtractorByXPath"/>
+        </property>
+        <property name="actions">
+            <list>
+                <ref bean="extractorProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="nextExtractorByXPath" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="waitSecond" value="2"></property>
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //a[@class='page next S_txt1 S_line1']
+	 		]]>
+            </value>
+        </property>
+        <property name="attribute" value="href"></property>
+    </bean>
+
+    <bean id="extractorProcessor" class="com.rain6.luckybug.action.ExtractMoreDataAction">
+        <property name="itemsExtractor">
+            <ref bean="itemsExtractor"></ref>
+        </property>
+        <property name="stringExtractor">
+            <ref bean="stringExtractor"></ref>
+        </property>
+        <property name="pipeline">
+            <list>
+                <!--<ref bean="console"></ref>-->
+                <ref bean="mysql"></ref>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="itemsExtractor" class="com.rain6.luckybug.extractor.ItemsExtractor">
+        <property name="expression">
+            <value>
+                <![CDATA[
+                //div[@class='feed_list feed_list_new W_linecolor']
+            ]]>
+            </value>
+        </property>
+        <property name="xpaths">
+            <list>
+                <map>
+                    <entry key="user" value="//div[@class='feed_content wbcon']/a"></entry>
+                </map>
+                <map>
+                    <entry key="content" value="//p[@class='comment_txt']"></entry>
+                </map>
+                <map>
+                    <entry key="content_data" value="//div[@class='feed_from W_textb']/a[1]"></entry>
+                </map>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="stringExtractor" class="com.rain6.luckybug.extractor.AttributeExtractor">
+        <property name="expression" value="//input[@class='searchInp_form'][1]"/>
+        <property name="attribute" value="value"/>
+    </bean>
+
+    <bean id="console" class="com.rain6.luckybug.pipeline.ConsolePipeline"/>
+
+    <bean id="mysql" class="com.rain6.luckybug.pipeline.RdbmsPipeline">
+        <property name="tableName" value="weibo"></property>
+    </bean>
+</beans>

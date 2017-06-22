@@ -20,13 +20,13 @@ public class WeiboSpider {
         // 向文本框中填入值
         WebElement loginname = webDriver.findElement(By.xpath("//input[@id='loginname']"));
         loginname.clear();
-        loginname.sendKeys("");
+        loginname.sendKeys("18322342372");
 
         Thread.sleep(3000);
 
         WebElement password = webDriver.findElement(By.xpath("//input[@type='password']"));
         password.clear();
-        password.sendKeys("");
+        password.sendKeys("18322342372");
 
         Thread.sleep(3000);
 

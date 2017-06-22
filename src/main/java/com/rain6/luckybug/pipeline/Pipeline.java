@@ -1,5 +1,6 @@
 package com.rain6.luckybug.pipeline;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,4 +15,6 @@ public interface Pipeline {
      * 输出核心
      */
     void process(Map<String, Object> resultItems);
+
+    void process(List<Map<String, Object>> resultItems);
 }

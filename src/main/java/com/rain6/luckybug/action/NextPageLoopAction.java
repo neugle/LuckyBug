@@ -72,7 +72,7 @@ public class NextPageLoopAction extends LuckyWebDriver implements Action {
             List<String> elementList = this.getExtractor().getExtractResults();
             if (elementList != null && elementList.size() > 0) {
                 try {
-                    logger.info("InPageLoopAction Info:from " + this.webDriver.getCurrentUrl() + " to " + elementList.get(0));
+                    logger.info("NextPageLoopAction Info:from " + this.webDriver.getCurrentUrl() + " to " + elementList.get(0));
                     this.webDriver.navigate().to(elementList.get(0));
                 } catch (Exception ex) {
                     //防止超时

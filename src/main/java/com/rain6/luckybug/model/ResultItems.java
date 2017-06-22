@@ -1,6 +1,7 @@
 package com.rain6.luckybug.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Map;
  */
 public class ResultItems {
     //结果
-    private Map<String, Object> fields = new HashMap<String, Object>();
+    private Map<String, Object> fields = new LinkedHashMap<String, Object>();
 
     /***
      * 插入结果集

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +52,6 @@ public class ExtractMoreDataAction extends LuckyWebDriver implements Action {
         this.pipeline = pipeline;
     }
 
-    private ResultItems resultItems;
-
     public void doAction() {
         try {
             String pk = null;
@@ -65,21 +64,24 @@ public class ExtractMoreDataAction extends LuckyWebDriver implements Action {
             if (this.getItemsExtractor() != null) {
                 itemsExtractor.doExtractor();
                 List<Map<String, Object>> results = itemsExtractor.getExtractResults();
+                List<Map<String, Object>> resultItems = new ArrayList<Map<String, Object>>();
                 for (Map<String, Object> result : results) {
-                    resultItems = new ResultItems();
+                    ResultItems resultItem = new ResultItems();
                     //装载数据
-                    resultItems.fill(result);
+                    resultItem.fill(result);
 
-                    resultItems.put("pk", pk);
+                    resultItem.put("pk", pk);
                     //记录当前时间
-                    resultItems.put("cdate", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
+                    resultItem.put("cdate", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
 
-                    //通过管道输出
-                    if (this.getPipeline() != null && this.getPipeline().size() > 0) {
-                        for (Pipeline pipeline : this.getPipeline()) {
-                            if (resultItems.getAll().size() > 0) {
-                                pipeline.process(resultItems.getAll());
-                            }
+                    resultItems.add(resultItem.getAll());
+                }
+
+                //通过管道输出
+                if (this.getPipeline() != null && this.getPipeline().size() > 0) {
+                    for (Pipeline pipeline : this.getPipeline()) {
+                        if (resultItems.size() > 0) {
+                            pipeline.process(resultItems);
                         }
                     }
                 }

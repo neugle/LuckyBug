@@ -287,7 +287,7 @@
     </bean>
 
     <bean id="ifNextProcessor" class="com.rain6.luckybug.action.NextPageLoopAction">
-        <property name="waitSecond" value="2"></property>
+        <property name="waitSecond" value="5"></property>
         <property name="extractor">
             <ref bean="ifNextExtractorByXPath"/>
         </property>

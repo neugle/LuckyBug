@@ -41,7 +41,7 @@ public class LuckyBug {
     }
 
     private static void init() {
-        tasksXmlPath.add("tasks/work/dzdp_ms.xml");
+        tasksXmlPath.add("tasks/work/weibo.xml");
         //tasksXmlPath.add("../conf/dzdp_ms.xml");
     }
 }
